@@ -5,25 +5,34 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using System;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PhotonScript : MonoBehaviourPunCallbacks
 {
+    public static PhotonScript instance; 
     string gameVersion = "1";
     bool isConnecting;
     bool refreshing = true;
 
     string RoomName;
-    string nick;
+    [HideInInspector] public string nick;
     string serverlist;
 
     public TMP_Text ServerList;
 
     public List<RoomInfo> TheRoomList;
     public GameObject Canvas;
-    
+
+    public GameObject Context;
+
+    List<Server> servers;
+    public GameObject Server;
+
 
     private void Awake()
     {
+        instance = this;
         PhotonNetwork.AutomaticallySyncScene = true;
         Canvas.SetActive(false);
     }
@@ -91,6 +100,7 @@ public class PhotonScript : MonoBehaviourPunCallbacks
 
     public override void OnRoomListUpdate(List<RoomInfo> roomList)
     {
+        /*
         serverlist = string.Empty;
         foreach (RoomInfo a in roomList)
         {
@@ -101,8 +111,28 @@ public class PhotonScript : MonoBehaviourPunCallbacks
             ServerList.text = serverlist;
             refreshing = false;
         }
-    }
+        */
 
+        servers = new List<Server>();
+        foreach (RoomInfo a in roomList)
+        {
+            servers.Add(new Server(a.Name, a.PlayerCount));
+        }
+        if (refreshing)
+        {
+            foreach(Transform t in Context.transform)
+            {
+                Destroy(t.gameObject);
+            }
+            foreach(Server s in servers)
+            {
+                GameObject server = Instantiate(Server, transform.position, transform.rotation, Context.transform);
+                server.transform.GetChild(0).GetComponent<TMP_Text>().text = $"{s.Name} with {s.Players} Players";
+                server.GetComponent<ServerButton>().ServerName = s.Name;
+            }
+            refreshing = false;
+        }
+    }
     
 
     public override void OnCreatedRoom()
@@ -118,7 +148,9 @@ public class PhotonScript : MonoBehaviourPunCallbacks
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        MYRefresh();
+        Debug.Log("oh no");
+        PhotonNetwork.Disconnect();
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void MYRefresh()
@@ -137,5 +169,16 @@ public class PhotonScript : MonoBehaviourPunCallbacks
         }
     }
 
+}
 
+public class Server
+{
+    public string Name;
+    public int Players;
+
+    public Server(string Name, int Players)
+    {
+        this.Name = Name;
+        this.Players = Players;
+    }
 }
