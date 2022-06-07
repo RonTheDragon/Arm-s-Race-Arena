@@ -5,11 +5,13 @@ using Photon.Pun;
 
 public class PlayerManager : MonoBehaviourPun
 {
+    [SerializeField] GameObject Canvas;
+    [SerializeField] GameObject TheCamera;
     PhotonView view;
     bool firsttime = true;
     void Start()
     {
-       
+        TheCamera = transform.GetChild(0).gameObject;
     }
 
     // Update is called once per frame
@@ -19,12 +21,19 @@ public class PlayerManager : MonoBehaviourPun
         {
             view = GetComponent<PhotonView>();
             firsttime = false;
+            TheCamera.GetComponent<Zoom>().enabled = false;
             if (!view.IsMine)
             {
+                Canvas.SetActive(false);
                 GetComponent<FirstPersonMovement>().enabled = false;
                 GetComponent<Jump>().enabled = false;
                 GetComponent<Crouch>().enabled = false;
-                transform.GetChild(0).gameObject.SetActive(false);
+                TheCamera.GetComponent<Camera>().enabled = false;
+                TheCamera.GetComponent<FirstPersonLook>().enabled = false;
+            }
+            else
+            {
+                TheCamera.GetComponent<AudioListener>().enabled = true;
             }
         }
 
