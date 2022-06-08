@@ -28,7 +28,7 @@ public class Heath : MonoBehaviour
         Hp -= Damage;
         if (Hp <= 0 && PV.IsMine)
         {
-            PhotonNetwork.Instantiate("Player", new Vector3(0, 5, 0), Quaternion.identity);
+            GameManager.Instance.SpawnPlayer(GetComponent<PlayerManager>().Color);
             PhotonNetwork.Destroy(gameObject);
         }
     }

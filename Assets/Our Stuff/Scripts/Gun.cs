@@ -16,6 +16,7 @@ public class Gun : MonoBehaviour
     {
        particle = transform.GetChild(0).GetComponent<ParticleSystem>();
        particleDamage = transform.GetChild(0).GetComponent<ParticleDamage>();
+       particleDamage.ShooterPV = transform.parent.parent.parent.GetComponent<PhotonView>();
     }
     // Start is called before the first frame update
     void Start()

@@ -4876,6 +4876,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 0
+  ShooterPV: {fileID: 0}
 --- !u!1 &730502146070748611
 GameObject:
   m_ObjectHideFlags: 0
@@ -5316,6 +5317,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Canvas: {fileID: 730502146070748611}
   TheCamera: {fileID: 0}
+  Color: {fileID: 0}
+  mesh: {fileID: 3107694849872058212}
 --- !u!114 &-7569077254343941264
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -11463,6 +11466,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Damage: 0
+  ShooterPV: {fileID: 0}
 --- !u!1001 &33349276470439884
 PrefabInstance:
   m_ObjectHideFlags: 0
