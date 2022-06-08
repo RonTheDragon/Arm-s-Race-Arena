@@ -24,7 +24,7 @@ public class PlayerManager : MonoBehaviourPun
             view = GetComponent<PhotonView>();
             firsttime = false;
             TheCamera.GetComponent<Zoom>().enabled = false;
-            mesh.material = Color;
+            mesh.materials[0] = Color;
             if (!view.IsMine)
             {
                 Canvas.SetActive(false);
