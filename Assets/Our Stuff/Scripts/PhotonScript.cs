@@ -40,6 +40,7 @@ public class PhotonScript : MonoBehaviourPunCallbacks
     void Start()
     {
         nick = string.Empty;
+        RoomName = string.Empty;
         Connect();
     }
 
