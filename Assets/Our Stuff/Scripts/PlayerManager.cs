@@ -7,8 +7,8 @@ public class PlayerManager : MonoBehaviourPun
 {
     [SerializeField] GameObject Canvas;
     [SerializeField] GameObject TheCamera;
-    [HideInInspector] public Material Color;
-    [SerializeField] MeshRenderer mesh;
+    public Material Color;
+    [SerializeField] Renderer mesh;
     PhotonView view;
     bool firsttime = true;
     void Start()
@@ -24,7 +24,7 @@ public class PlayerManager : MonoBehaviourPun
             view = GetComponent<PhotonView>();
             firsttime = false;
             TheCamera.GetComponent<Zoom>().enabled = false;
-            mesh.materials[0] = Color;
+            mesh.materials[0].color = Color.color;
             if (!view.IsMine)
             {
                 Canvas.SetActive(false);

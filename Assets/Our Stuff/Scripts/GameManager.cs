@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviourPun
         if (material == null)
         {
             if (colors.Count> PhotonNetwork.CountOfPlayers)
-            PM.Color = colors[PhotonNetwork.CountOfPlayers];
+            PM.Color = colors[PhotonNetwork.CountOfPlayers-1];
         }
         else
         {
