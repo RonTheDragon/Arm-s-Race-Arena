@@ -11,20 +11,12 @@ public class ParticleDamage : MonoBehaviour
     {
         if (ShooterPV.IsMine) 
         {
-            Heath HP = other.GetComponent<Heath>();
-            if (HP != null)
-            {
-                PhotonView PV = HP.PV;
+                PhotonView PV = other.GetComponent<PhotonView>();
                 if (PV != null)
                 {
-                    if (HP.Hp <= Damage && !HP.AlreadyDead)
-                    {
-                        HP.AlreadyDead = true;
-                        ShooterPV.RPC("AddKill", RpcTarget.All,1);
-                    }
-                    PV.RPC("TakeDamage", RpcTarget.All, Damage);
+                    PV.RPC("TakeDamage", RpcTarget.All, Damage,ShooterPV.ViewID);
                 }
-            }
+            
         }
     }
 }

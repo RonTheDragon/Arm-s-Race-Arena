@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Photon.Realtime;
 
-public class PlayerAttackManager : MonoBehaviour
+public class PlayerAttackManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] Camera TheCamera;
     [SerializeField] Transform Hand;
@@ -40,7 +42,7 @@ public class PlayerAttackManager : MonoBehaviour
                 {
                     SelectedGun = 0;
                 }
-                PV.RPC("SwitchWeapon", RpcTarget.All, SelectedGun);
+                Switching();
             }
             else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
             {
@@ -52,7 +54,7 @@ public class PlayerAttackManager : MonoBehaviour
                 {
                     SelectedGun = Hand.childCount-1;
                 }
-                PV.RPC("SwitchWeapon", RpcTarget.All,SelectedGun);
+                Switching();
             }
         }
     }
@@ -67,7 +69,15 @@ public class PlayerAttackManager : MonoBehaviour
         Hand.GetChild(SelectedGun).GetComponent<Gun>().Shoot(AimAt);
     }
 
-    [PunRPC]
+    void Switching()
+    {
+        Hashtable hash = new Hashtable();
+        hash.Add("Gun", SelectedGun);
+        PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+
+        SwitchWeapon(SelectedGun);
+    }
+
     void SwitchWeapon(int WeaponSelected)
     {
         if (!PV.IsMine)
@@ -79,5 +89,18 @@ public class PlayerAttackManager : MonoBehaviour
             h.gameObject.SetActive(false);
         }
         Hand.GetChild(WeaponSelected).gameObject.SetActive(true);
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        if(!PV.IsMine && targetPlayer == PV.Owner && changedProps.ContainsKey("Gun"))
+        {
+            SwitchWeapon((int)changedProps["Gun"]);
+        }
+    }
+
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        Switching();
     }
 }

@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviourPun
     {
         Instance = this;
         Checkpoints = transform.GetChild(0);
-        SpawnPlayer(0);
+        SpawnPlayer();
     }
     // Update is called once per frame
     void Update()
@@ -28,14 +28,9 @@ public class GameManager : MonoBehaviourPun
         
     }
 
-    public void SpawnPlayer(int Kills)
+    public void SpawnPlayer()
     {
         int n = Random.Range(0, Checkpoints.childCount);
-        GameObject Player = PhotonNetwork.Instantiate("Player", Checkpoints.GetChild(n).position, Quaternion.identity);
-        if (Kills > 0)
-        {
-            PhotonView pv = Player.GetComponent<PhotonView>();          
-            pv.RPC("AddKill", RpcTarget.All,Kills);
-        }
+        PhotonNetwork.Instantiate("Player", Checkpoints.GetChild(n).position, Quaternion.identity);
     }
 }

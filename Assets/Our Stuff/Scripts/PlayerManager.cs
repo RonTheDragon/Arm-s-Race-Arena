@@ -4,8 +4,10 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using UnityEngine.UI;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
+using Photon.Realtime;
 
-public class PlayerManager : MonoBehaviourPun
+public class PlayerManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] GameObject MyCanvas;
     [SerializeField] TMP_Text MyKills;
@@ -26,12 +28,17 @@ public class PlayerManager : MonoBehaviourPun
         hp = GetComponent<Heath>();
     }
 
+    private void Awake()
+    {
+        view = GetComponent<PhotonView>();
+    }
+
     // Update is called once per frame
     void Update()
     {
         if(firsttime)
         {
-            view = GetComponent<PhotonView>();
+            
             firsttime = false;
             TheCamera.GetComponent<Zoom>().enabled = false;
             if (!view.IsMine)
@@ -53,10 +60,11 @@ public class PlayerManager : MonoBehaviourPun
                 TheCamera.GetComponent<AudioListener>().enabled = true;
                 GameManager.Instance.TheCamera = TheCamera.GetComponent<Camera>();
             }
+            UpdateKills();
             ShowThemKills.text = $"Kills: {Kills}";
             MyKills.text = $"Kills: {Kills}";
             if (GameManager.Instance.colors.Count> view.Owner.ActorNumber)
-            mesh.materials[0].color = GameManager.Instance.colors[view.Owner.ActorNumber].color;
+            mesh.materials[0].color = GameManager.Instance.colors[view.Owner.ActorNumber-1].color;
         }
 
         if (!view.IsMine && GameManager.Instance.TheCamera != null)
@@ -75,13 +83,49 @@ public class PlayerManager : MonoBehaviourPun
         }
     }
 
-
-    [PunRPC]
-    public void AddKill(int kills)
+    public void AddKill()
     {
-        Kills+= kills;
-        ShowThemKills.text = $"Kills: {Kills}";
-        MyKills.text = $"Kills: {Kills}";
+        Hashtable hash = new Hashtable();
+        if (view.Owner.CustomProperties.ContainsKey("Kills"))
+        {
+            hash.Add("Kills", (int)view.Owner.CustomProperties["Kills"] + 1);
+        }
+        else
+        {
+            hash.Add("Kills", 0);
+        }
+        view.Owner.SetCustomProperties(hash);      
+    }
+
+    public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
+    {
+        if (changedProps != null && targetPlayer!=null)
+        {
+            if (targetPlayer == view.Owner && changedProps.ContainsKey("Kills"))
+            {
+                Kills = (int)changedProps["Kills"];
+                ShowThemKills.text = $"Kills: {Kills}";
+                MyKills.text = $"Kills: {Kills}";
+            }
+        }
+    }
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        UpdateKills();
+    }
+
+    public void UpdateKills()
+    {
+        Hashtable hash = new Hashtable();
+        if (view.Owner.CustomProperties.ContainsKey("Kills"))
+        {
+            hash.Add("Kills", (int)view.Owner.CustomProperties["Kills"]);
+        }
+        else
+        {
+            hash.Add("Kills", 0);
+        }
+        view.Owner.SetCustomProperties(hash);
     }
 
     public void QuitGame()

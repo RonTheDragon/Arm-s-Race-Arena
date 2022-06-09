@@ -5493,7 +5493,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
-  m_CollisionDetection: 1
+  m_CollisionDetection: 3
 --- !u!114 &3092472562226518834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5633,6 +5633,7 @@ MonoBehaviour:
   MaxHp: 10
   Hp: 0
   PV: {fileID: 0}
+  Attacker: {fileID: 0}
   AlreadyDead: 0
 --- !u!1 &3131903413769517316
 GameObject:

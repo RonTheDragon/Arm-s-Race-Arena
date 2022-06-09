@@ -8,6 +8,7 @@ public class Heath : MonoBehaviour
     public float MaxHp;
     public float Hp;
     [HideInInspector] public PhotonView PV;
+    [HideInInspector] public PhotonView Attacker;
     PlayerManager PM;
     [HideInInspector] public bool AlreadyDead;
 
@@ -22,9 +23,10 @@ public class Heath : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Hp <= 0)
+        if (Hp <= 0 && !AlreadyDead)
         {
-            if (PV.IsMine && !AlreadyDead)
+            AlreadyDead = true;
+            if (PV.IsMine)
             {
                 Death();
             }
@@ -35,15 +37,17 @@ public class Heath : MonoBehaviour
         }
     }
         [PunRPC]
-        void TakeDamage(float Damage)
+        void TakeDamage(float Damage,int DamagerId)
         {
             Hp -= Damage;
+            Attacker = PhotonNetwork.GetPhotonView(DamagerId);
         }
 
         void Death()
         {
-            AlreadyDead = true;
-            GameManager.Instance.SpawnPlayer(PM.Kills);
+        if (Attacker != null)
+            Attacker.GetComponent<PlayerManager>().AddKill();
+            GameManager.Instance.SpawnPlayer();
             PhotonNetwork.Destroy(gameObject);
         }
 }
