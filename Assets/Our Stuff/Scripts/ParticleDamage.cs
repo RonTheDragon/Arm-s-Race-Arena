@@ -11,10 +11,10 @@ public class ParticleDamage : MonoBehaviour
     {
         if (ShooterPV.IsMine) 
         {
-                PhotonView PV = other.GetComponent<PhotonView>();
+                Heath PV = other.GetComponent<Heath>();
                 if (PV != null)
                 {
-                    PV.RPC("TakeDamage", RpcTarget.All, Damage,ShooterPV.ViewID);
+                    PV.TakingDamage(Damage,ShooterPV.ViewID);
                 }
             
         }

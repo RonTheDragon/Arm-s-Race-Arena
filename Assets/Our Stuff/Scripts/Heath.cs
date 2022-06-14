@@ -12,6 +12,9 @@ public class Heath : MonoBehaviour
     PlayerManager PM;
     [HideInInspector] public bool AlreadyDead;
 
+    float TakeDamageCooldown;
+    float StoredDamage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -35,6 +38,19 @@ public class Heath : MonoBehaviour
                 gameObject.SetActive(false);
             }
         }
+
+        if (TakeDamageCooldown > 0)
+        {
+            TakeDamageCooldown -= Time.deltaTime;
+        }
+        else
+        {
+            if (StoredDamage > 0)
+            {
+                PV.RPC("TakeDamage", RpcTarget.All, StoredDamage, Attacker.ViewID);
+                StoredDamage = 0;
+            }
+        }
     }
         [PunRPC]
         void TakeDamage(float Damage,int DamagerId)
@@ -42,6 +58,20 @@ public class Heath : MonoBehaviour
             Hp -= Damage;
             Attacker = PhotonNetwork.GetPhotonView(DamagerId);
         }
+
+   public void TakingDamage(float Damage, int id)
+    {
+        if (TakeDamageCooldown > 0)
+        {
+            StoredDamage += Damage;
+        }
+        else
+        {
+            Attacker = PhotonNetwork.GetPhotonView(id);
+            StoredDamage = Damage;
+            TakeDamageCooldown = 1;
+        }
+    }
 
         void Death()
         {
