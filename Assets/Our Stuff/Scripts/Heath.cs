@@ -55,10 +55,11 @@ public class Heath : MonoBehaviour
         [PunRPC]
         void TakeDamage(float Damage,int DamagerId)
         {
-        if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine)
-        {
-            Hp -= Damage;
-        }
+            if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine)
+            {
+                Hp -= Damage;
+            Debug.Log(PhotonNetwork.GetPhotonView(DamagerId).Owner.NickName);
+            }
             Attacker = PhotonNetwork.GetPhotonView(DamagerId);
         }
 
