@@ -35,7 +35,7 @@ public class Heath : MonoBehaviour
             }
             else
             {
-                gameObject.SetActive(false);
+                //gameObject.SetActive(false);
             }
         }
 
@@ -58,7 +58,6 @@ public class Heath : MonoBehaviour
             if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine)
             {
                 Hp -= Damage;
-            Debug.Log(PhotonNetwork.GetPhotonView(DamagerId).Owner.NickName);
             }
             Attacker = PhotonNetwork.GetPhotonView(DamagerId);
         }
