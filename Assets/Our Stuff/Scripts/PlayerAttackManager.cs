@@ -9,6 +9,7 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] Camera TheCamera;
     [SerializeField] Transform Hand;
+    int RememberKills;
     PhotonView PV;
     int SelectedGun;
     bool unlockpistol = false;
@@ -23,7 +24,7 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
     // Start is called before the first frame update
     void Start()
     {
-        
+        KillsRemembered(PV.Owner);
     }
 
     // Update is called once per frame
@@ -99,6 +100,23 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
         if (Physics.Raycast(TheCamera.transform.position, TheCamera.transform.forward, out hit))
         { AimAt = hit.point; }
         Hand.GetChild(SelectedGun).GetComponent<Gun>().Shoot(AimAt);
+    }
+
+    public void KillsRemembered(Player p)
+    {
+        if (p.CustomProperties.ContainsKey("Kills"))
+        {
+            if (RememberKills <= (int)p.CustomProperties["Kills"])
+            {
+                RememberKills = (int)p.CustomProperties["Kills"];
+            }
+            else
+            {
+                Hashtable hash = new Hashtable();
+                hash.Add("Kills", RememberKills);
+                p.SetCustomProperties(hash);
+            }
+        }
     }
 
     void Switching()

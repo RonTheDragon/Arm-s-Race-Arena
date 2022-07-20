@@ -106,8 +106,10 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         {
             if (targetPlayer == view.Owner && changedProps.ContainsKey("Kills"))
             {
+                view.GetComponent<PlayerAttackManager>().KillsRemembered(view.Owner);
                 ShowThemKills.text = $"Kills: {(int)view.Owner.CustomProperties["Kills"]}";
                 MyKills.text = $"Kills: {(int)view.Owner.CustomProperties["Kills"]}";
+
             }
         }
     }
@@ -118,6 +120,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
 
     public void UpdateKills()
     {
+        view.GetComponent<PlayerAttackManager>().KillsRemembered(view.Owner);
         Hashtable hash = new Hashtable();
         if (view.Owner.CustomProperties.ContainsKey("Kills"))
         {
