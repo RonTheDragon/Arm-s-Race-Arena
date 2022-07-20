@@ -18,6 +18,8 @@ public class PhotonInRoom : MonoBehaviourPunCallbacks
         ServerName.text = PhotonNetwork.CurrentRoom.Name;
         setPlayerCount();
         CheckIfOwner();
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     // Update is called once per frame
