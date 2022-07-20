@@ -21,7 +21,7 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     PhotonView view;
     bool firsttime = true;
     Heath hp;
-    public int Kills;
+   // public int Kills;
     void Start()
     {
         TheCamera = transform.GetChild(0).gameObject;
@@ -61,8 +61,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
                 GameManager.Instance.TheCamera = TheCamera.GetComponent<Camera>();
             }
             UpdateKills();
-            ShowThemKills.text = $"Kills: {Kills}";
-            MyKills.text = $"Kills: {Kills}";
+            ShowThemKills.text = $"Kills: {(int)view.Owner.CustomProperties["Kills"]}";
+            MyKills.text = $"Kills: {(int)view.Owner.CustomProperties["Kills"]}";
             if (GameManager.Instance.colors.Count> view.Owner.ActorNumber)
             mesh.materials[0].color = GameManager.Instance.colors[view.Owner.ActorNumber-1].color;
         }
@@ -103,9 +103,8 @@ public class PlayerManager : MonoBehaviourPunCallbacks
         {
             if (targetPlayer == view.Owner && changedProps.ContainsKey("Kills"))
             {
-                Kills = (int)changedProps["Kills"];
-                ShowThemKills.text = $"Kills: {Kills}";
-                MyKills.text = $"Kills: {Kills}";
+                ShowThemKills.text = $"Kills: {(int)view.Owner.CustomProperties["Kills"]}";
+                MyKills.text = $"Kills: {(int)view.Owner.CustomProperties["Kills"]}";
             }
         }
     }
