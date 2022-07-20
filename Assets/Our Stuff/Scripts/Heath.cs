@@ -46,7 +46,7 @@ public class Heath : MonoBehaviour
         {
             if (StoredDamage > 0 && AttackingPlayer != null)
             {
-                PV.RPC("TakeDamage", RpcTarget.All, StoredDamage, int.Parse(AttackingPlayer.UserId));
+                PV.RPC("TakeDamage", RpcTarget.All, StoredDamage, AttackingPlayer.ActorNumber);
                 StoredDamage = 0;
             }
         }
