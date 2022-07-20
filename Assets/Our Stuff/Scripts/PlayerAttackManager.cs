@@ -11,6 +11,7 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
     [SerializeField] Transform Hand;
     PhotonView PV;
     int SelectedGun;
+    bool unlockrifle = false;
 
     private void Awake()
     {
@@ -32,28 +33,34 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
             {
                 PV.RPC("Shoot", RpcTarget.All);
             }
-            if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
+            //if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
+            //{
+            //    if (Hand.childCount > SelectedGun+1)
+            //    {
+            //        SelectedGun++;
+            //    }
+            //    else
+            //    {
+            //        SelectedGun = 0;
+            //    }
+            //    Switching();
+            //}
+            //else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
+            //{
+            //    if (SelectedGun != 0)
+            //    {
+            //        SelectedGun--; 
+            //    }
+            //    else
+            //    {
+            //        SelectedGun = Hand.childCount-1;
+            //    }
+            //    Switching();
+            //}
+            if ( (int)PV.Owner.CustomProperties["Kills"]>2&& !unlockrifle)
             {
-                if (Hand.childCount > SelectedGun+1)
-                {
-                    SelectedGun++;
-                }
-                else
-                {
-                    SelectedGun = 0;
-                }
-                Switching();
-            }
-            else if (Input.GetAxisRaw("Mouse ScrollWheel") < 0)
-            {
-                if (SelectedGun != 0)
-                {
-                    SelectedGun--; 
-                }
-                else
-                {
-                    SelectedGun = Hand.childCount-1;
-                }
+                unlockrifle = true;
+                SelectedGun++;
                 Switching();
             }
         }
