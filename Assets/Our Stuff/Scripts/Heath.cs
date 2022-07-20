@@ -52,6 +52,7 @@ public class Heath : MonoBehaviour
     void TakeDamage(float Damage, int DamagerId)
     {
         Attacker = PhotonNetwork.GetPhotonView(DamagerId);
+        Debug.Log(DamagerId);
       //  if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine && Attacker != null)
             
         Hp -= Damage;
@@ -85,8 +86,6 @@ public class Heath : MonoBehaviour
         if (Attacker != null)
         {
             Attacker.GetComponent<PlayerManager>().AddKill();
-
-            Debug.Log($"{Attacker.Owner.NickName} killed {PV.Owner.NickName}");
         }
         GameManager.Instance.SpawnPlayer();
         PhotonNetwork.Destroy(gameObject);
