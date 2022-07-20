@@ -10,7 +10,7 @@ public class Heath : MonoBehaviour
     public float MaxHp;
     public float Hp;
     [HideInInspector] public PhotonView PV;
-    [HideInInspector] public PhotonView Attacker;
+   // [HideInInspector] public PhotonView Attacker;
     [HideInInspector] public Player AttackingPlayer;
     PlayerManager PM;
     [HideInInspector] public bool AlreadyDead;
@@ -44,19 +44,18 @@ public class Heath : MonoBehaviour
         }
         else
         {
-            if (StoredDamage > 0 && Attacker!=null)
+            if (StoredDamage > 0 && AttackingPlayer != null)
             {
-                PV.RPC("TakeDamage", RpcTarget.All, StoredDamage, Attacker.ViewID);
+                PV.RPC("TakeDamage", RpcTarget.All, StoredDamage, int.Parse(AttackingPlayer.UserId));
                 StoredDamage = 0;
             }
         }
     }
     [PunRPC]
-    void TakeDamage(float Damage, int DamagerId)
+    void TakeDamage(float Damage, int PlayerId)
     {
-        Attacker = PhotonNetwork.GetPhotonView(DamagerId);
-        AttackingPlayer = Attacker.Owner;
-        Debug.Log(DamagerId);
+        AttackingPlayer = PhotonNetwork.CurrentRoom.GetPlayer(PlayerId);
+        //Debug.Log(DamagerId);
       //  if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine && Attacker != null)
             
         Hp -= Damage;
@@ -72,9 +71,9 @@ public class Heath : MonoBehaviour
 
     public void TakingDamage(float Damage, int id)
     {
-        Attacker = PhotonNetwork.GetPhotonView(id);
-        AttackingPlayer = Attacker.Owner;
-       // Hp -= Damage;
+        //Attacker = PhotonNetwork.GetPhotonView(id);
+        AttackingPlayer = PhotonNetwork.CurrentRoom.GetPlayer(id);
+        // Hp -= Damage;
         if (TakeDamageCooldown > 0)
         {
             StoredDamage += Damage;

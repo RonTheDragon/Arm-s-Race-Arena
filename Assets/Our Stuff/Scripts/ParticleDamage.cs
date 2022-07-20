@@ -14,7 +14,7 @@ public class ParticleDamage : MonoBehaviour
                 Heath PV = other.GetComponent<Heath>();
                 if (PV != null)
                 {
-                    PV.TakingDamage(Damage,ShooterPV.ViewID);
+                    PV.TakingDamage(Damage, int.Parse(ShooterPV.Owner.UserId));
                 }
             
         }
