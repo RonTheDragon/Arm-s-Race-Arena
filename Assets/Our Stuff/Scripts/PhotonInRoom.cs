@@ -5,6 +5,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
 using System;
+using Hashtable = ExitGames.Client.Photon.Hashtable;
 
 public class PhotonInRoom : MonoBehaviourPunCallbacks
 {
@@ -20,6 +21,12 @@ public class PhotonInRoom : MonoBehaviourPunCallbacks
         CheckIfOwner();
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
+        if (PhotonNetwork.LocalPlayer.CustomProperties.ContainsKey("Kills"))
+        {
+            Hashtable hash = new Hashtable();
+            hash.Add("Kills", 0);
+            PhotonNetwork.LocalPlayer.SetCustomProperties(hash);
+        }
     }
 
     // Update is called once per frame
