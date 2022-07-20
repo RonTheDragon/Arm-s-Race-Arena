@@ -76,14 +76,22 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
                 if ((int)PV.Owner.CustomProperties["Kills"] >= 8 && !won)
                 {
                     won = true;
-                    PhotonNetwork.AutomaticallySyncScene = true;
-                    PhotonNetwork.LoadLevel(1);
+                    PV.RPC("EndGame", RpcTarget.All);
                 }
             }
         }
     }
-
     [PunRPC]
+    void EndGame()
+    {
+        if (PhotonNetwork.IsMasterClient) 
+        {
+            PhotonNetwork.AutomaticallySyncScene = true;
+            PhotonNetwork.LoadLevel(1); 
+        }
+    }
+
+        [PunRPC]
     void Shoot()
     {
         Vector3 AimAt = Vector3.zero;
