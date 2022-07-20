@@ -11,7 +11,8 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
     [SerializeField] Transform Hand;
     PhotonView PV;
     int SelectedGun;
-    bool unlockrifle = false;
+    bool unlockpistol = false;
+    bool unlocksniper = false;
 
     private void Awake()
     {
@@ -57,11 +58,21 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
             //    }
             //    Switching();
             //}
-            if ((int)PV.Owner.CustomProperties["Kills"] > 2 && !unlockrifle)
+            if ((int)PV.Owner.CustomProperties["Kills"] >= 2 && !unlockpistol)
             {
-                unlockrifle = true;
+                unlockpistol = true;
                 SelectedGun++;
                 Switching();
+            }
+            if ((int)PV.Owner.CustomProperties["Kills"] >= 5 && !unlocksniper)
+            {
+               unlocksniper = true;
+                SelectedGun++;
+                Switching();
+            }
+            if ((int)PV.Owner.CustomProperties["Kills"] >= 8)
+            {
+                PhotonNetwork.LoadLevel(1);
             }
         }
     }
