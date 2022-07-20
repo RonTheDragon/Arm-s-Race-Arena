@@ -56,9 +56,15 @@ public class Heath : MonoBehaviour
     void TakeDamage(float Damage, int DamagerId)
     {
         Attacker = PhotonNetwork.GetPhotonView(DamagerId);
-        if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine &&Attacker !=null)
+        if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine && Attacker != null)
         {
             Hp -= Damage;
+
+        }
+        if (Attacker == null)
+        {
+            Debug.Log("lama");
+
         }
 
     }
