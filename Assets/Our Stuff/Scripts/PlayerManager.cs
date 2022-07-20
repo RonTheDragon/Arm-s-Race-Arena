@@ -61,8 +61,11 @@ public class PlayerManager : MonoBehaviourPunCallbacks
                 GameManager.Instance.TheCamera = TheCamera.GetComponent<Camera>();
             }
             UpdateKills();
-            ShowThemKills.text = $"Kills: {(int)view.Owner.CustomProperties["Kills"]}";
-            MyKills.text = $"Kills: {(int)view.Owner.CustomProperties["Kills"]}";
+            if (view.Owner.CustomProperties.ContainsKey("Kills"))
+            {
+                ShowThemKills.text = $"Kills: {(int)view.Owner.CustomProperties["Kills"]}";
+                MyKills.text = $"Kills: {(int)view.Owner.CustomProperties["Kills"]}";
+            }
             if (GameManager.Instance.colors.Count> view.Owner.ActorNumber)
             mesh.materials[0].color = GameManager.Instance.colors[view.Owner.ActorNumber-1].color;
         }
