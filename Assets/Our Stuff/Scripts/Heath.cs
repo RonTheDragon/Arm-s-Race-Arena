@@ -32,11 +32,7 @@ public class Heath : MonoBehaviour
             if (PV.IsMine)
             {
                 Death();
-            }
-            else
-            {
-                //gameObject.SetActive(false);
-            }
+            } 
         }
 
         if (TakeDamageCooldown > 0)
@@ -59,10 +55,14 @@ public class Heath : MonoBehaviour
       //  if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine && Attacker != null)
             
         Hp -= Damage;
-
-        
-        
-
+        if (Hp <= 0 && !AlreadyDead)
+        {
+            AlreadyDead = true;
+            if (PV.IsMine)
+            {
+                Death();
+            }
+        }
     }
 
     public void TakingDamage(float Damage, int id)
