@@ -9,8 +9,8 @@ public class Heath : MonoBehaviour
 {
     public float MaxHp;
     public float Hp;
+    
     [HideInInspector] public PhotonView PV;
-   // [HideInInspector] public PhotonView Attacker;
     [HideInInspector] public Player AttackingPlayer;
     PlayerManager PM;
     [HideInInspector] public bool AlreadyDead;
@@ -35,7 +35,7 @@ public class Heath : MonoBehaviour
             if (PV.IsMine)
             {
                 Death();
-            } 
+            }
         }
 
         if (TakeDamageCooldown > 0)
@@ -55,9 +55,7 @@ public class Heath : MonoBehaviour
     void TakeDamage(float Damage, int PlayerId)
     {
         AttackingPlayer = PhotonNetwork.CurrentRoom.GetPlayer(PlayerId);
-        //Debug.Log(DamagerId);
-      //  if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine && Attacker != null)
-            
+
         Hp -= Damage;
         if (Hp <= 0 && !AlreadyDead)
         {
@@ -71,9 +69,7 @@ public class Heath : MonoBehaviour
 
     public void TakingDamage(float Damage, int id)
     {
-        //Attacker = PhotonNetwork.GetPhotonView(id);
         AttackingPlayer = PhotonNetwork.CurrentRoom.GetPlayer(id);
-        // Hp -= Damage;
         if (TakeDamageCooldown > 0)
         {
             StoredDamage += Damage;
@@ -87,10 +83,6 @@ public class Heath : MonoBehaviour
 
     void Death()
     {
-        //if (Attacker != null)
-        //{
-        //    Attacker.GetComponent<PlayerManager>().AddKill();
-        //}
         if (AttackingPlayer != null)
         {
             Hashtable hash = new Hashtable();

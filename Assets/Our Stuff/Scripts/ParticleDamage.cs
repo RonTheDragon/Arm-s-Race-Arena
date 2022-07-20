@@ -12,11 +12,13 @@ public class ParticleDamage : MonoBehaviour
         if (ShooterPV.IsMine) 
         {
                 Heath PV = other.GetComponent<Heath>();
+            if (other.GetComponent<PhotonView>()!=ShooterPV) 
+            {
                 if (PV != null)
                 {
                     PV.TakingDamage(Damage, ShooterPV.Owner.ActorNumber);
                 }
-            
+            }
         }
     }
 }
