@@ -13,6 +13,7 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
     int SelectedGun;
     bool unlockpistol = false;
     bool unlocksniper = false;
+    bool won = false;
 
     private void Awake()
     {
@@ -70,8 +71,9 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
                 SelectedGun++;
                 Switching();
             }
-            if ((int)PV.Owner.CustomProperties["Kills"] >= 8)
+            if ((int)PV.Owner.CustomProperties["Kills"] >= 8 && !won)
             {
+                won = true;
                 PhotonNetwork.AutomaticallySyncScene = true;
                 PhotonNetwork.LoadLevel(1);
             }
