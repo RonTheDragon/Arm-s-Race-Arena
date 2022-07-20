@@ -52,17 +52,18 @@ public class Heath : MonoBehaviour
             }
         }
     }
-        [PunRPC]
-        void TakeDamage(float Damage,int DamagerId)
+    [PunRPC]
+    void TakeDamage(float Damage, int DamagerId)
+    {
+        Attacker = PhotonNetwork.GetPhotonView(DamagerId);
+        if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine &&Attacker !=null)
         {
-            if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine)
-            {
-                Hp -= Damage;
-            }
-            Attacker = PhotonNetwork.GetPhotonView(DamagerId);
+            Hp -= Damage;
         }
 
-   public void TakingDamage(float Damage, int id)
+    }
+
+    public void TakingDamage(float Damage, int id)
     {
         Hp -= Damage;
         if (TakeDamageCooldown > 0)
@@ -77,11 +78,11 @@ public class Heath : MonoBehaviour
         }
     }
 
-        void Death()
-        {
+    void Death()
+    {
         if (Attacker != null)
             Attacker.GetComponent<PlayerManager>().AddKill();
-            GameManager.Instance.SpawnPlayer();
-            PhotonNetwork.Destroy(gameObject);
-        }
+        GameManager.Instance.SpawnPlayer();
+        PhotonNetwork.Destroy(gameObject);
+    }
 }
