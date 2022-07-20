@@ -57,12 +57,12 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
             //    }
             //    Switching();
             //}
-            if ( (int)PV.Owner.CustomProperties["Kills"]>2&& !unlockrifle)
-            {
-                unlockrifle = true;
-                SelectedGun++;
-                Switching();
-            }
+            //if ( (int)PV.Owner.CustomProperties["Kills"]>2&& !unlockrifle)
+            //{
+            //    unlockrifle = true;
+            //    SelectedGun++;
+            //    Switching();
+            //}
         }
     }
 
