@@ -65,6 +65,7 @@ public class Heath : MonoBehaviour
 
     public void TakingDamage(float Damage, int id)
     {
+        Attacker = PhotonNetwork.GetPhotonView(id);
         Hp -= Damage;
         if (TakeDamageCooldown > 0)
         {
@@ -72,7 +73,6 @@ public class Heath : MonoBehaviour
         }
         else
         {
-            Attacker = PhotonNetwork.GetPhotonView(id);
             StoredDamage = Damage;
             TakeDamageCooldown = 0.5f;
         }
