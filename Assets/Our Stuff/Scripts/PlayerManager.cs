@@ -86,15 +86,15 @@ public class PlayerManager : MonoBehaviourPunCallbacks
     public void AddKill()
     {
         Hashtable hash = new Hashtable();
-        if (view.Owner.CustomProperties.ContainsKey("Kills"))
-        {
+        //if (view.Owner.CustomProperties.ContainsKey("Kills"))
+        //{
             hash.Add("Kills", (int)view.Owner.CustomProperties["Kills"] + 1);
-        }
-        else
-        {
-            hash.Add("Kills", 0);
-        }
-        view.Owner.SetCustomProperties(hash);      
+        //}
+        //    else
+        //    {
+        //        hash.Add("Kills", 0);
+        //    }
+        view.Owner.SetCustomProperties(hash);
     }
 
     public override void OnPlayerPropertiesUpdate(Player targetPlayer, Hashtable changedProps)
