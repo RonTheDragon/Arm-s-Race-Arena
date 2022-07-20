@@ -83,7 +83,11 @@ public class Heath : MonoBehaviour
     void Death()
     {
         if (Attacker != null)
+        {
             Attacker.GetComponent<PlayerManager>().AddKill();
+
+            Debug.Log($"{Attacker.Owner.NickName} killed {PV.Owner.NickName}");
+        }
         GameManager.Instance.SpawnPlayer();
         PhotonNetwork.Destroy(gameObject);
     }
