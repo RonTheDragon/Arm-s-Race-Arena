@@ -59,23 +59,26 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
             //    }
             //    Switching();
             //}
-            if ((int)PV.Owner.CustomProperties["Kills"] >= 2 && !unlockpistol)
+            if (PV.Owner.CustomProperties.ContainsKey("Kills"))
             {
-                unlockpistol = true;
-                SelectedGun++;
-                Switching();
-            }
-            if ((int)PV.Owner.CustomProperties["Kills"] >= 5 && !unlocksniper)
-            {
-               unlocksniper = true;
-                SelectedGun++;
-                Switching();
-            }
-            if ((int)PV.Owner.CustomProperties["Kills"] >= 8 && !won)
-            {
-                won = true;
-                PhotonNetwork.AutomaticallySyncScene = true;
-                PhotonNetwork.LoadLevel(1);
+                if ((int)PV.Owner.CustomProperties["Kills"] >= 2 && !unlockpistol)
+                {
+                    unlockpistol = true;
+                    SelectedGun++;
+                    Switching();
+                }
+                if ((int)PV.Owner.CustomProperties["Kills"] >= 5 && !unlocksniper)
+                {
+                    unlocksniper = true;
+                    SelectedGun++;
+                    Switching();
+                }
+                if ((int)PV.Owner.CustomProperties["Kills"] >= 8 && !won)
+                {
+                    won = true;
+                    PhotonNetwork.AutomaticallySyncScene = true;
+                    PhotonNetwork.LoadLevel(1);
+                }
             }
         }
     }

@@ -45,7 +45,7 @@ public class Heath : MonoBehaviour
         }
         else
         {
-            if (StoredDamage > 0)
+            if (StoredDamage > 0 && Attacker!=null)
             {
                 PV.RPC("TakeDamage", RpcTarget.All, StoredDamage, Attacker.ViewID);
                 StoredDamage = 0;
@@ -56,23 +56,19 @@ public class Heath : MonoBehaviour
     void TakeDamage(float Damage, int DamagerId)
     {
         Attacker = PhotonNetwork.GetPhotonView(DamagerId);
-        if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine && Attacker != null)
-        {
-            Hp -= Damage;
+      //  if (!PhotonNetwork.GetPhotonView(DamagerId).IsMine && Attacker != null)
+            
+        Hp -= Damage;
 
-        }
-        if (Attacker == null)
-        {
-            Debug.Log("lama");
-
-        }
+        
+        
 
     }
 
     public void TakingDamage(float Damage, int id)
     {
         Attacker = PhotonNetwork.GetPhotonView(id);
-        Hp -= Damage;
+       // Hp -= Damage;
         if (TakeDamageCooldown > 0)
         {
             StoredDamage += Damage;
