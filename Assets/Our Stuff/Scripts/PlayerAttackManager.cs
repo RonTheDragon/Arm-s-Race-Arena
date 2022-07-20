@@ -72,6 +72,7 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
             }
             if ((int)PV.Owner.CustomProperties["Kills"] >= 8)
             {
+                PhotonNetwork.AutomaticallySyncScene = true;
                 PhotonNetwork.LoadLevel(1);
             }
         }
