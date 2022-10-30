@@ -15,6 +15,7 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
     bool unlockpistol = false;
     bool unlocksniper = false;
     bool won = false;
+    bool Shooting;
 
     private void Awake()
     {
@@ -30,11 +31,19 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
     // Update is called once per frame
     void Update()
     {
+        if (Shooting)
+        {
+            Shoot();
+        }
         if (PV.IsMine) 
         {
-            if (Input.GetMouseButton(0))
+            if (Input.GetMouseButtonDown(0))
             {
-                PV.RPC("Shoot", RpcTarget.All);
+                PV.RPC("StartShoot", RpcTarget.All);
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                PV.RPC("StopShoot", RpcTarget.All);
             }
             //if (Input.GetAxisRaw("Mouse ScrollWheel") > 0)
             //{
@@ -88,11 +97,22 @@ public class PlayerAttackManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.IsMasterClient) 
         {
             PhotonNetwork.AutomaticallySyncScene = true;
-            PhotonNetwork.LoadLevel(1); 
+            PhotonNetwork.LoadLevel(1);
         }
     }
 
-        [PunRPC]
+    [PunRPC]
+    void StartShoot()
+    {
+        Shooting = true;
+    }
+
+    [PunRPC]
+    void StopShoot()
+    {
+        Shooting = false;
+    }
+
     void Shoot()
     {
         Vector3 AimAt = Vector3.zero;
