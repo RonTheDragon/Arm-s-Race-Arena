@@ -77,7 +77,7 @@ public class Heath : MonoBehaviour
         else
         {
             StoredDamage = Damage;
-            TakeDamageCooldown = 0.5f;
+            TakeDamageCooldown = 0.01f;
         }
     }
 
